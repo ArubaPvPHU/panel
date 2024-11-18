@@ -83,4 +83,23 @@ class ServerController extends ApplicationApiController
 
         return $this->returnNoContent();
     }
+
+    public function viewByUUID(GetServerRequest $request, $uuid): array
+    {
+        $server = QueryBuilder::for(Server::query())
+            ->allowedFilters('uuid')
+            ->where('uuid', $uuid)
+            ->first();
+
+        if ($server) {
+            return $this->fractal->item($server)
+                ->transformWith($this->getTransformer(ServerTransformer::class))
+                ->toArray();
+        } else {
+            return [
+                'success' => false,
+                'message' => 'Nem találtam a szervert a megadott UUID alapján :(',
+            ];
+        }
+    }
 }

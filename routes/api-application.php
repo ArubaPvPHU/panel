@@ -102,6 +102,8 @@ Route::group(['prefix' => '/servers'], function () {
 
         Route::delete('/{database:id}', [Application\Servers\DatabaseController::class, 'delete']);
     });
+
+    Route::get('/union/{uuid}', [Application\Servers\ServerController::class, 'viewByUUID']);
 });
 
 /*
